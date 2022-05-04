@@ -120,7 +120,7 @@ class Trainer(CIFARTrainer):
                 else:  # posterior flattening
                     pred = torch.argmax(outputs, dim=1)
                     correct = torch.eq(pred, targets).float()
-                    confidence_target = self.softmax(outputs)[torch.arange(targets.size(0)), targets]
+                    confidence_target = self.softmax(outputs)[torch.arange(targets.size(0)), targets.to(torch.int64)]
                     confidence_target = torch.clamp(confidence_target, min=0., max=self.upper)
                     confidence_else = (1.0 - confidence_target) / (self.num_classes - 1)
                     onehot = one_hot_embedding(targets, num_classes=self.num_classes)
